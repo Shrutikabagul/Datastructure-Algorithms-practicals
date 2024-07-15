@@ -1,0 +1,499 @@
+INPUT:
+
+#include<iostream>
+using namespace std;
+struct node
+{
+	int data;
+	node *left, *right;
+};
+
+class bt
+{
+	node *root;
+	public:
+		bt()
+		{
+			root = NULL;
+		}
+		node* create();
+		void insert(node *root, node *temp);
+		void preorder(node *root);
+		void postorder(node *root);
+		void inorder(node *root);
+		int search(node *root, int key);
+		int height(node *root);
+		void swapnode(node *root);
+		int minimum(node *root);
+		int bstsearch(node *root, int key);
+		node* delet(node *root, int key);
+};
+
+node* bt::create()
+{
+	char ch;
+	do
+	{
+		node *temp = new node;
+		cout << "\nEnter data: ";
+		cin >> temp -> data;
+		temp -> left = NULL;
+		temp -> right = NULL;
+		if (root == NULL)
+		{
+			root = temp;
+		}
+		else
+		{
+			insert(root, temp);
+		}
+		cout << "\nWant to more data y/n: ";
+		cin >> ch;
+	}
+	while(ch == 'y');
+	return root;
+}
+
+void bt::insert(node *root, node *temp)
+{
+	if (temp -> data < root -> data)
+	{
+		if (root -> left == NULL)
+		{
+			root -> left = temp;
+		}
+		else
+		{
+			insert(root -> left, temp);
+		}
+	}
+	else
+	{
+		if (root -> right == NULL)
+		{
+			root -> right = temp;
+		}
+		else
+		{
+			insert(root -> right, temp);
+		}
+	}		
+}
+
+void bt::preorder(node *root)
+{
+	if (root != NULL)
+	{
+		cout << " " << root -> data;
+		preorder(root -> left);
+		preorder(root -> right);
+	}
+}
+
+void bt :: inorder(node *root)
+{
+	if (root != NULL)
+	{
+		inorder(root -> left);
+		cout << " " << root -> data;
+		inorder(root -> right);
+	}
+}
+
+void bt :: postorder(node *root)
+{
+	if(root != NULL)
+	{
+		postorder(root -> left);
+		postorder(root -> right);
+		cout << " " << root -> data;
+	}		
+}
+
+int bt :: height(node *root)
+{
+	if (root == NULL)
+	{
+		return 0;
+	}
+	return 1 + max(height(root -> left),height(root -> right));
+}
+
+void bt::swapnode(node *root)
+{
+	if (root == NULL)
+	{
+		return ;
+	}
+	node *temp = root -> left;
+	root -> left = root -> right;
+	root -> right = temp;
+	swapnode(root->left);
+	swapnode(root->right);
+}
+
+int bt :: minimum(node * root)
+{
+	if (root == NULL)
+	{
+		 cout<<"\n tree is empty";
+		 return -1;
+	}
+	if (root -> left == NULL)
+		return root -> data;
+	
+	return minimum(root -> left);
+}
+
+int bt :: bstsearch(node *root,int key)
+{
+	if (root == NULL)
+	{
+		return -1;
+	}
+	if (key < root->data)
+		return bstsearch(root -> left,key);
+	else if (key > root->data)
+		return bstsearch(root -> right,key);
+	else
+		return root -> data;
+}
+
+node* bt:: delet(node *root, int key)
+{
+	if (root == NULL)
+	{
+		return NULL;
+	}
+	if (root -> data > key)
+	{
+		root -> left = delet(root -> left, key);
+	}
+	else if (root -> data < key)
+	{
+		root -> right = delet(root -> right, key);
+	}
+	else
+	{
+		if(root -> left == NULL && root -> right == NULL)
+		{
+			delete root;
+			root = NULL;
+		}
+		else if( root -> left == NULL)
+		{
+			node *temp = root -> right;
+			delete root;
+			root = temp;
+		}
+		else if(root -> right == NULL)
+		{
+			node *temp = root -> left;
+			delete root;
+			root = temp;
+		}
+		else
+		{
+			int temp = minimum(root -> right);
+			root -> data = temp;
+			root -> right = delet(root -> right, temp);
+			
+		}
+	}
+	return root;
+}
+
+int main()
+{
+	int ch;
+	int ele;
+	int key;
+	int Min;
+	node *temp;
+	bt rm;
+	do
+	{
+		cout << "\n*******MENU********";
+		cout << "\n1.Create";
+		cout << "\n2.Preorder Display";
+		cout << "\n3.inorder display";
+		cout << "\n4.Postrder display";
+		cout << "\n5.search element";
+		cout << "\n6.height of tree";
+		cout << "\n7.Swap Node";
+		cout << "\n8.min value";
+		cout << "\n9.delete node";
+		cout << "\n10.exit";
+		
+		cout << "\nEnter choice: ";
+		cin >> ch;
+		switch (ch)
+		{
+			case 1:
+				temp = rm.create();
+				break;
+			case 2:
+				cout << "\nPreorder: ";
+				rm.preorder(temp);
+				break;
+			case 3:
+				cout<<"\nInorder: ";
+				rm.inorder(temp);
+				break;
+			case 4:
+				cout << "\nPostorder: ";
+				rm.postorder(temp);
+				break;
+			case 5:
+				cout << "\nEnter Element you want to search: ";
+				cin >> key;
+				ele = rm.bstsearch(temp,key);
+				if (ele == -1)
+					cout << "\nElement not found";
+				else
+					cout << "\n" << ele;
+				break;
+			case 6:
+				cout << rm.height(temp);
+				break;
+			case 7:
+				rm.swapnode(temp);
+				break;
+			case 8:
+				Min = rm.minimum(temp);
+				if (Min != -1)
+				{
+					cout << Min;
+				}
+				break;
+			case 9:
+				cout << "\nEnter the element you want to delete: ";
+				cin >> key;
+				rm.delet(temp, key);
+				cout<<"\nInorder: ";
+				rm.inorder(temp);
+				break;
+				
+			case 10:
+				cout<< "\nExiting\n";
+				break;	
+		}
+		
+	}while(ch != 10);
+}
+
+
+
+OUTPUT:
+
+*******MENU********
+1.Create
+2.Preorder Display
+3.inorder display
+4.Postrder display
+5.search element
+6.height of tree
+7.Swap Node
+8.min value
+9.delete node
+10.exit
+Enter choice: 1
+Enter data: 10
+Want to more data y/n: y
+Enter data: 5
+Want to more data y/n: y
+Enter data: 16
+Want to more data y/n: y
+Enter data: 3
+Want to more data y/n: y
+Enter data: 7
+Want to more data y/n: y
+Enter data: 13
+Want to more data y/n: y
+Enter data: 20
+Want to more data y/n: n
+*******MENU********
+1.Create
+2.Preorder Display
+3.inorder display
+4.Postrder display
+5.search element
+6.height of tree
+7.Swap Node
+8.min value
+9.delete node
+10.exit
+Enter choice: 2
+Preorder:  10 5 3 7 16 13 20
+*******MENU********
+1.Create
+2.Preorder Display
+3.inorder display
+4.Postrder display
+5.search element
+6.height of tree
+7.Swap Node
+8.min value
+9.delete node
+10.exit
+Enter choice: 3
+Inorder:  3 5 7 10 13 16 20
+*******MENU********
+1.Create
+2.Preorder Display
+3.inorder display
+4.Postrder display
+5.search element
+6.height of tree
+7.Swap Node
+8.min value
+9.delete node
+10.exit
+Enter choice: 4
+Postorder:  3 7 5 13 20 16 10
+*******MENU********
+1.Create
+2.Preorder Display
+3.inorder display
+4.Postrder display
+5.search element
+6.height of tree
+7.Swap Node
+8.min value
+9.delete node
+10.exit
+Enter choice: 5
+Enter Element you want to search: 20
+20
+*******MENU********
+1.Create
+2.Preorder Display
+3.inorder display
+4.Postrder display
+5.search element
+6.height of tree
+7.Swap Node
+8.min value
+9.delete node
+10.exit
+Enter choice: 5
+Enter Element you want to search: 12
+Element not found
+*******MENU********
+1.Create
+2.Preorder Display
+3.inorder display
+4.Postrder display
+5.search element
+6.height of tree
+7.Swap Node
+8.min value
+9.delete node
+10.exit
+Enter choice: 6
+3
+*******MENU********
+1.Create
+2.Preorder Display
+3.inorder display
+4.Postrder display
+5.search element
+6.height of tree
+7.Swap Node
+8.min value
+9.delete node
+10.exit
+Enter choice: 7
+*******MENU********
+1.Create
+2.Preorder Display
+3.inorder display
+4.Postrder display
+5.search element
+6.height of tree
+7.Swap Node
+8.min value
+9.delete node
+10.exit
+Enter choice: 3
+Inorder:  20 16 13 10 7 5 3
+*******MENU********
+1.Create
+2.Preorder Display
+3.inorder display
+4.Postrder display
+5.search element
+6.height of tree
+7.Swap Node
+8.min value
+9.delete node
+10.exit
+Enter choice: 7
+*******MENU********
+1.Create
+2.Preorder Display
+3.inorder display
+4.Postrder display
+5.search element
+6.height of tree
+7.Swap Node
+8.min value
+9.delete node
+10.exit
+Enter choice: 8
+3
+*******MENU********
+1.Create
+2.Preorder Display
+3.inorder display
+4.Postrder display
+5.search element
+6.height of tree
+7.Swap Node
+8.min value
+9.delete node
+10.exit
+Enter choice: 9
+Enter the element you want to delete: 13
+Inorder:  3 5 7 10 16 20
+*******MENU********
+1.Create
+2.Preorder Display
+3.inorder display
+4.Postrder display
+5.search element
+6.height of tree
+7.Swap Node
+8.min value
+9.delete node
+10.exit
+Enter choice: 9
+Enter the element you want to delete: 16
+Inorder:  3 5 7 10 13 20
+*******MENU********
+1.Create
+2.Preorder Display
+3.inorder display
+4.Postrder display
+5.search element
+6.height of tree
+7.Swap Node
+8.min value
+9.delete node
+10.exit
+Enter choice: 9
+Enter the element you want to delete: 10
+Inorder:  3 5 7 13 20
+*******MENU********
+1.Create
+2.Preorder Display
+3.inorder display
+4.Postrder display
+5.search element
+6.height of tree
+7.Swap Node
+8.min value
+9.delete node
+10.exit
+Enter choice: 10
+Exiting

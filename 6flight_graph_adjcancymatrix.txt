@@ -1,0 +1,294 @@
+INPUT
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int arr[50][50] = {0,0};
+int vis[50] = {0};
+
+void create(int n,string CityNames[]){
+
+       
+
+      for(int i = 0;i<n;i++){
+            cout<<"Enter city name: ";
+            cin>>CityNames[i];
+      }
+      
+      while(true){
+      
+            string from ;
+            string desti;
+            int w;
+            
+            
+            cout<<"Enter from: ";
+            cin>>from;
+            cout<<"Enter destination: ";
+            cin>>desti;
+            cout<<"Enter weight: ";
+            cin>>w;
+            
+            
+            int a ;
+            int b;
+            
+            for(int i = 0;i<n;i++){
+                  if(from==CityNames[i]){
+                        a = i;
+                  }
+                  if(desti==CityNames[i]){
+                        b = i;
+                  }
+            }      
+            
+            arr[a][b] = w;
+            arr[b][a] = w;
+            
+            cout<<"1. Enter more data: "<<endl;
+            cout<<"2. For exiting: ";
+            int ch;
+            cin>>ch;
+            if(ch==2){
+                  break;
+            }
+            
+      }
+      cout<<endl;
+
+
+}
+
+void display(int n,string CityNames[]){
+
+      //printing
+      cout<<"Printing Graph"<<endl<<endl;
+      for(int i = 0;i<n;i++){
+            cout<<CityNames[i]<<"  ";
+            for(int j = 0;j<n;j++){
+              
+                  cout<<arr[i][j]<<" ";
+            }
+            cout<<endl;
+      }
+      
+      
+}
+
+void dfs(int n,string CityNames[]){
+      
+      cout<<"DFS Traversal: "<<endl;
+      
+      for(int i = 0;i<n;i++){
+            vis[i]=0;
+      }
+      
+      stack<int>s;
+      
+      s.push(0);
+      
+      while(!s.empty()){
+            
+            int node = s.top();
+            s.pop();
+            
+            if(vis[node]==0){
+            
+                  cout<<CityNames[node]<<" ";
+                  vis[node]=1;
+                  
+                  for(int i= 0;i<n;i++){
+                        
+                        if(arr[node][i]!=0){
+                              s.push(i);
+                        }      
+                        
+                  }      
+                  
+            }      
+            
+      }      
+      
+      
+}
+
+void bfs(int n ,string CityNames[]){
+      cout<<"BFS Traversal: "<<endl;
+ 
+      for(int i = 0;i<n;i++){
+            vis[i]=0;
+      }
+      
+      queue<int>q;
+      q.push(0);
+      vis[0]=1;
+      
+      while(!q.empty()){
+            
+            int node = q.front();
+            q.pop();
+            
+            cout<<CityNames[node]<<" ";
+            
+            for(int i = 0;i<n;i++){
+                  if(arr[node][i]!=0 && vis[i]==0){
+                        q.push(i);
+                        vis[i]=1;
+                  }
+            }      
+            
+      }
+      cout<<endl;
+}
+
+void isconnected(int n){
+
+      cout<<endl;
+      for(int i= 0;i<n;i++){
+            if(vis[i]==0){
+                  cout<<"Not Connected"<<endl;
+                  break;
+            }
+      }
+      
+      cout<<"Connected"<<endl;
+      
+}
+
+
+int main(){
+
+
+      int n;
+      cout<<"Enter no of cities: ";
+      cin>>n;
+      
+      string CityNames[n];
+
+      int ch;
+      while(true){
+      
+            cout<<"1.Create the graph: "<<endl;
+            cout<<"2.Display the graph: "<<endl;
+            cout<<"3.DFS Traversal: "<<endl;
+            cout<<"4.BFS Traversal: "<<endl;
+            cout<<"5.Check Connected or Not: "<<endl;
+            
+            cin>>ch;
+            
+            if(ch==1){
+                  cout<<endl;
+                  create(n,CityNames);
+                  cout<<endl;
+            }
+            else if(ch==2){
+                  cout<<endl;
+                  display(n,CityNames);
+                  cout<<endl;
+            }
+            else if(ch==3){
+                  cout<<endl;
+                  dfs(n,CityNames);
+                  cout<<endl;
+            }
+            else if(ch==4){
+                  cout<<endl;
+                  bfs(n,CityNames);
+                  cout<<endl;
+            }
+            else if(ch==5){
+                  cout<<endl;
+                  isconnected(n);
+                  cout<<endl;
+            }
+            else{
+                  cout<<"Exiting..."<<endl;
+                  break;
+            }
+      
+      }
+
+     
+      return 0;
+
+}
+
+
+
+OUTPUT
+Enter no of cities: 4
+1.Create the graph:
+2.Display the graph:
+3.DFS Traversal:
+4.BFS Traversal:
+5.Check Connected or Not:
+1
+
+Enter city name: NAGPUR
+Enter city name: AKOLA
+Enter city name: PUNE
+Enter city name: MUMBAI
+Enter from: AKOLA
+Enter destination: NAGPUR
+Enter weight: 5
+1. Enter more data:
+2. For exiting: 1
+Enter from: AKOLA
+Enter destination: PUNE
+Enter weight: 8
+1. Enter more data:
+2. For exiting: 1
+Enter from: AKOLA
+Enter destination: MUMBAI
+Enter weight: 15
+1. Enter more data:
+2. For exiting: 1
+Enter from: PUNE
+Enter destination: NAGPUR
+Enter weight: 12
+1. Enter more data:
+2. For exiting: 2
+
+
+1.Create the graph:
+2.Display the graph:
+3.DFS Traversal:
+4.BFS Traversal:
+5.Check Connected or Not:
+2
+
+Printing Graph
+
+NAGPUR  0 5 12 0
+AKOLA  5 0 8 15
+PUNE  12 8 0 0
+MUMBAI  0 15 0 0
+
+1.Create the graph:
+2.Display the graph:
+3.DFS Traversal:
+4.BFS Traversal:
+5.Check Connected or Not:
+3
+
+DFS Traversal:
+NAGPUR PUNE AKOLA MUMBAI
+1.Create the graph:
+2.Display the graph:
+3.DFS Traversal:
+4.BFS Traversal:
+5.Check Connected or Not:
+4
+
+BFS Traversal:
+NAGPUR AKOLA PUNE MUMBAI
+
+1.Create the graph:
+2.Display the graph:
+3.DFS Traversal:
+4.BFS Traversal:
+5.Check Connected or Not:
+5
+
+
+Connected

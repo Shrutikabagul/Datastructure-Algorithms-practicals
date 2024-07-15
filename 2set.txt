@@ -1,0 +1,164 @@
+#program to implement set operations
+class set:
+    def __init__(self):
+        self.elements=[]
+    def length(self):
+        return len(self.elements)
+    def isempty(self):
+        return len(self.elements)==0
+    def display(self):
+        for p in self.elements:
+            print(p,end= ' ')
+    def contains(self,x):
+        found=False
+        for i in self.elements:
+            if i==x:
+                found=True
+                print(x,"present in set")
+                break
+            else:
+                print(x,"not present in set")
+        return found
+    def addItem(self,x):
+        
+        found=False
+        for i in self.elements:
+            if i==x:
+                found=True
+            break
+        #return found
+        if found==False:
+            self.elements.append(x)
+        else:
+            print(x,"already exist in set")
+    def remItem(self,x):
+        f=self.elements.index(x)
+        self.elements.pop(f);
+        print(x,"remove successfully from set")
+    def union(self,A):
+        uni=[]
+        for x in self.elements:
+            uni.append(x)
+        for y in A.elements:
+            if y not in uni:
+                uni.append(y)
+        return uni
+    def intersect(self,A):
+        intersect=[]
+        for x in self.elements:
+            if x in A.elements:
+                intersect.append(x)
+        return intersect
+    def differ(self,A):
+        differ=[]
+        for y in self.elements:
+            if y not in A.elements:
+                differ.append(y)
+        return differ
+    def subset(self,A):
+        x=A.length()
+        count=0
+        for y in A.elements:
+            if y in self.elements:
+                count=count+1
+        if x==count:
+            print("\nit is proper subset")
+        elif x<count:
+            print("\nit is subset")
+        else:
+            print("\nit is not subset")
+    
+#starting of program
+def createSet(set1):
+    n=int(input("how many elements do u want in ur set "))
+    for x in range(n):
+        f=int(input("enter elements"));
+        set1.addItem(f)
+        
+s1 = set()
+choice = 0  
+print("Create Set A")
+createSet(s1)
+s1.display()
+
+while choice != 10:
+    print(end='\n')
+    print("|-------------------|")
+    print("| Menu              |")
+    print("| 1.Add             |")
+    print("| 2.Remove          |")
+    print("| 3.Contains        |")
+    print("| 4.Size            |")
+    print("| 5.Intersection    |")
+    print("| 6.Union           |")
+    print("| 7.Difference      |")
+    print("| 8.Subset          |")
+    print("| 9.Exit            |")
+    print("|-------------------|")
+
+    choice = int(input("Enter Choice"))
+
+    if choice == 1:
+        e = int(input("Enter Number to Add"))
+        s1.addItem(e)
+        s1.display()
+
+    elif choice == 2:
+        e = int(input("Enter Number to Remove"))
+        s1.remItem(e)
+        s1.display()
+
+    elif choice == 3:
+        e = int(input("Enter Number to Search"))
+        s1.contains(e)
+
+    elif choice == 4:
+        print("Set Contains {} elements".format(s1.length()))
+
+    elif choice == 5:
+        print("Create a Set B for doing Intersection Operation")
+        s2=set()
+        createSet(s2)
+        print("\nSet A  ")
+        s1.display()
+        print("\nSet B  ")
+        s2.display()
+        print("\nIntersection = ",s1.intersect(s2))
+        
+    elif choice == 6:
+        print("Create a Set B for doing Union Operation")
+        s3=set()
+        createSet(s3)
+        print("\nSet A  ")
+        s1.display()
+        print("\nSet B  ")
+        s3.display()
+        print("\nUnion  = ",s1.union(s3))
+        
+
+    elif choice == 7:
+        print("Create a Set B for calculating Set Difference")
+        s3=set()
+        createSet(s3)
+        print("\nSet A  ")
+        s1.display()
+        print("\nSet B  ")
+        s3.display()
+        print("\ndifference  = ",s1.differ(s3))
+
+    elif choice == 8:
+        print("Create a Set B for checking Subset or not")
+        s3=set()
+        createSet(s3)
+        print("\nSet A  ")
+        s1.display()
+        print("\nSet B  ")
+        s3.display()
+       
+
+    
+    elif choice == 9:
+        break;
+
+    elif choice < 1 or choice > 9:
+        print("Please Enter Valid Choice")
