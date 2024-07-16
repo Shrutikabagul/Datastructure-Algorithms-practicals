@@ -1,1 +1,1 @@
-# Datastructure-Algorithms-practicals
+# Datastructure-Algorithms-Practicals
